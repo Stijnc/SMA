@@ -1,0 +1,26 @@
+<#
+.DESCRIPTION
+    Create a portable module. Portable modules are like regular modules, except for one difference 
+    – they don’t contain any functionality. Each portable module reflects a regular PowerShell module, 
+    in that it contains the cmdlet stubs of all the cmdlets of its regular PowerShell module counterpart. 
+.STEPS
+    STEP1
+        Logon to a server that has the SMA PowerShell module installed (available on the Orchestrator installation media)
+    STEP2
+        create a PowerShell remoting session to the server that has the module installed
+    STEP3
+        execute the New-SMAPortableModule cmdlet provinding a source and destination path
+    STEP4
+        import the zip file into WAP
+.NOTES
+    You can remote into the server that has the SMA PowerShell module installed, but be aware of the double Hop.
+    As kerberos uses delegation, the SMA server is not authenticated to remote into the server that has the target module installed.
+    Using CredSSP as the authentication mechanism resolved this issue (but needs to be used wisely).      
+#>
+
+#create the session
+$Session = New-PSSession -ComputerName SCSM1
+
+#create the module
+New-SmaPortableModule -Session $session -ModuleName Smlets -OutputPath 'C:\Users\SCInstaller\Desktop'
+
